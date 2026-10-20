@@ -1,0 +1,63 @@
+# -*- doom-docs -*-
+#+title:     :lang odin
+#+subtitle:  C, minus its footguns
+#+created:   March 27, 2026
+#+since:     26.04.0
+
+* Description :unfold:
+This module adds support for the [[https://odin-lang.org/][Odin]] programming language.
+
+- Syntax highlighting (with or without tree-sitter)
+- Auto-format (with ~odinfmt~, requires [[module::editor format]])
+- LSP integration (via ~ols~)
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+# Flags should be in alphanumerical order.
+- +lsp ::
+  Enable LSP support for ~odin-mode~ and ~odin-ts-mode~. Requires [[module::tools
+  lsp]] and an LSP server (e.g. =ols=).
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires [[module::tools tree-sitter]]. Emacs 30 or newer is
+  recommended.
+
+** Packages
+- [[package:odin-mode]]
+- [[package:odin-ts-mode]] if [[module:+tree-sitter]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module has no hard requirements for basic syntax highlighting, but beyond
+that, benefits from having the following executables in your ~$PATH~:
+- ~odin~
+- ~odinfmt~ (for the [[module::tools format]] module)
+- ~ols~ (for [[module:+lsp]])
+
+* Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** Keybinds
+| Binding         | Description |
+|-----------------+-------------|
+| [[kbd:<localleader> b]] | ~odin-build~  |
+| [[kbd:<localleader> t]] | ~odin-test~   |
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

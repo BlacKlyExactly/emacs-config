@@ -1,0 +1,68 @@
+# -*- doom-docs -*-
+#+title:    :lang web
+#+subtitle: The tubes
+#+created:  June 15, 2015
+#+since:    0.7
+
+* Description :unfold:
+This module adds support for various web languages, including HTML5, CSS,
+SASS/SCSS, Pug/Jade/Slim, and HAML, as well as various web frameworks, like
+ReactJS, Wordpress, Jekyll, Phaser, AngularJS, Django, and more.
+
+** Maintainers
+- @hlissner
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +lsp ::
+  Enable LSP support for ~web-mode~ and ~css-mode~. Requires [[module::tools lsp]] and a
+  langserver.
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires [[module::tools tree-sitter]].
+
+** Packages
+- [[package:company-web]] if [[module::completion company]]
+- [[package:counsel-css]] if [[module::completion ivy]]
+- [[package:emmet-mode]]
+- [[package:haml-mode]]
+- [[package:helm-css-scss]] if [[module::completion helm]]
+- [[package:less-css-mode]]
+- [[package:pug-mode]]
+- [[package:rainbow-mode]]
+- [[package:sass-mode]]
+- [[package:slim-mode]]
+- [[package:stylus-mode]]
+- [[package:sws-mode]]
+- [[package:web-mode]]
+
+** TODO Hacks
+#+begin_quote wip
+This module's hacks haven't been documented yet. [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+- Fixes ~//~ line commenting in JSX and Javascript files (if you aren't using
+  :lang javascript for some reason)
+
+* TODO Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+** Formatter
+Formatting is handled using the [[module::editor format]] module via [[https://prettier.io/docs/en/install.html][prettier]].
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

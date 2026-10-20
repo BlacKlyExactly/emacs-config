@@ -1,0 +1,123 @@
+# -*- doom-docs -*-
+#+title:    :ui modeline
+#+subtitle: Snazzy, Atom-inspired modeline, plus API
+#+created:  February 20, 2017
+#+since:    2.0.0
+
+* Description :unfold:
+This module provides an Atom-inspired, minimalistic modeline for Doom Emacs,
+powered by the [[pkg:doom-modeline]] package (where you can find screenshots).
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +light ::
+  Enable a lighter, less featureful version of the modeline that does not depend
+  on [[pkg:doom-modeline]], which has performances issues in some cases.
+
+** Packages
+- [[package:anzu]]
+- [[package:doom-modeline]] unless [[module:+light]]
+- [[package:evil-anzu]] if [[module::editor evil]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** Hiding the modeline
+- You can use ~M-x mode-line-invisible-mode RET~ to hide modeline for the current
+  buffer.
+
+** TODO Switching the modeline and header line
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** TODO Changing the default modeline
+
+** TODO Activating a format
+
+** TODO Defining a modeline format
+
+** TODO Defining a modeline segment
+
+** TODO Extracting Doom's modeline into your config
+
+* Troubleshooting
+[[doom-report:][Report an issue?]]
+
+** Where are my minor modes?
+I rarely need to know what minor modes are active, so I removed them. ~M-x
+doom/describe-active-minor-mode~ was written to substitute for it.
+
+** Icons in my modeline look strange
+1. Check whether ~nerd-icons~ are installed. Run ~M-x nerd-icons-install-fonts~ 
+   to install the resource fonts. Note that
+   ~nerd-icons~ only support GUI. See [[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons]] for details.
+
+2. ~cnfonts~ will conflict with ~nerd-icons~. You can refer the following
+   workaround:
+    #+begin_src emacs-lisp
+    ;; See https://github.com/seagle0128/doom-modeline/issues/278#issuecomment-569510336
+    ;; Add to $DOOMDIR/packages.el
+    (package! cnfonts)
+    ;; Add to $DOOMDIR/config.el
+    (add-hook 'after-setting-font-hook #'cnfonts-set-font)
+    #+end_src
+
+** The right side of the modeline is cut off
+I believe the consensus is: this is due to oversized icons, i.e. a font issue.
+Some possible solutions:
+
+1. Add some padding to the modeline definition:
+    #+begin_src emacs-lisp
+    (with-eval-after-load 'doom-modeline
+      (doom-modeline-def-modeline 'main
+        '(bar matches buffer-info remote-host buffer-position parrot selection-info)
+        '(misc-info minor-modes check input-method buffer-encoding major-mode process vcs "  "))) ; <-- added padding here
+    #+end_src
+
+2. Use another font for the mode line (or a different ~:height~) (source)
+    #+begin_src emacs-lisp
+    (custom-set-faces!
+      '(mode-line :family "Noto Sans" :height 0.9)
+      '(mode-line-inactive :family "Noto Sans" :height 0.9))
+    #+end_src
+
+(Mentioned in [[github:doomemacs/core/issues/1680][#1680]], [[github:doomemacs/core/issues/278][#278]] and [[https://github.com/seagle0128/doom-modeline/issues/334][seagle0128/doom-modeline#334]])
+
+4. Change the width of icon characters in ~char-width-table~:
+    #+begin_src emacs-lisp
+    (add-hook! 'doom-modeline-mode-hook
+      (let ((char-table char-width-table))
+        (while (setq char-table (char-table-parent char-table)))
+        (dolist (pair doom-modeline-rhs-icons-alist)
+          (let ((width 2)  ; <-- tweak this
+                (chars (cdr pair))
+                (table (make-char-table nil)))
+            (dolist (char chars)
+              (set-char-table-range table char width))
+            (optimize-char-table table)
+            (set-char-table-parent table char-table)
+            (setq char-width-table table)))))
+    #+end_src
+
+   If this doesn't help, try different values for ~width~ such as ~width 1~ or
+   ~width 3~.
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

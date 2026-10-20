@@ -1,0 +1,52 @@
+# -*- doom-docs -*-
+#+title:    :lang sml
+#+subtitle: ...
+#+created:  Mar 30, 2020
+#+since:    21.12.0
+
+* Description :unfold:
+This module adds [[https://smlfamily.github.io/][SML (Standard ML) programming language]] support to Doom Emacs.
+
+** Maintainers
+*This module needs a maintainer.* [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +lsp ::
+  Enable LSP support for ~sml-mode~/~sml-ts-mode~. Requires [[module::tools lsp]]
+  and a langserver (supports [[https://github.com/azdavis/millet][millet-ls]]).
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires [[module::tools tree-sitter]].
+
+** Packages
+- [[package:company-mlton]] if [[module::completion company]]
+- [[package:sml-mode]]
+- [[package:sml-ts-mode]] if [[module:+tree-sitter]]
+
+** Hacks
+/No hacks documented for this module./
+
+* TODO Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires =sml= and =MLton=.
+
+** Formatter
+
+Formatting is handled using the [[module::editor format]] module via [[https://github.com/jluningp/smlformat#installation][smlformat]].
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

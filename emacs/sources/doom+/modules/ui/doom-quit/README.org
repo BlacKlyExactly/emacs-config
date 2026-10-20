@@ -1,0 +1,58 @@
+# -*- doom-docs -*-
+#+title:    :ui doom-quit
+#+subtitle: One does not simply quit Emacs
+#+created:  February 19, 2017
+#+since:    2.0.0
+
+* Description :unfold:
+A silly module that throws cute confirmation prompts at you when you exit Emacs,
+like DOOM (the game) did. Some quotes are from the classic games, others are
+random, nerdy references that no decent human being has any business
+recognizing.
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+/This module doesn't install any packages./
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* Usage
+Quit Emacs with [[kbd:<leader> q q]] and watch it go. The prompt only happens if you
+have (real) buffers open.
+
+#+begin_quote warning
+This module won't kick in when killing daemon frames (because that isn't
+actually “quitting” Emacs).
+#+end_quote
+
+* Configurations
+The messages presented by this module can be customized by changing the
+~+doom-quit-messages~ variable:
+#+begin_src emacs-lisp
+(setq +doom-quit-messages
+      '(;;from doom 2
+        "Don't go now, there's a dimensional shambler waiting at the dos prompt!"
+        "Get outta here and go back to your boring programs."
+        "If I were your boss, I'd deathmatch ya in a minute!"
+        "Look, bud. You leave now and you forfeit your body count!"
+        "You're lucky I don't smack you for thinking about leaving."))
+ #+end_src
+
+* Troubleshooting
+If you have any issues with this module do let me know
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

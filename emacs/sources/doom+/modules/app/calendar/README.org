@@ -1,0 +1,72 @@
+# -*- doom-docs -*-
+#+title:    :app calendar
+#+subtitle: Watch your missed deadlines in real time
+#+created:  January 13, 2018
+#+since:    21.12.0
+
+* Description :unfold:
+This module adds a calendar view for Emacs, with org and google calendar sync
+support.
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- [[package:calfw]]
+- [[package:calfw-org]]
+- [[package:calfw-cal]]
+- [[package:calfw-ical]]
+- [[package:org-gcal]]
+  
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires:
+- A Google Calendar account.
+- [[https://github.com/kidd/org-gcal.el#installation][An OAuth client ID]], for syncing said account with [[pkg:org-gcal]].
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** Changing calendar sources
+By defining your own calendar commands, you can control what sources to pull
+calendar data from:
+#+begin_src emacs-lisp
+(defun my-open-calendar ()
+  (interactive)
+  (calfw-open-calendar-buffer
+   :contents-sources
+   (list
+    (calfw-org-create-source "Green")  ; org-agenda source
+    (calfw-org-create-file-source "cal" "/path/to/cal.org" "Cyan")  ; other org source
+    (calfw-howm-create-source "Blue")  ; howm source
+    (calfw-cal-create-source "Orange") ; diary source
+    (calfw-ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+    (calfw-ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+   )))
+#+end_src
+
+The [[https://github.com/kiwanami/emacs-calfw][kiwanami/emacs-calfw]] project readme contains more examples.
+
+** Synchronizing Org and Google Calendar
+The [[https://github.com/kidd/org-gcal.el][kidd/org-gcal.el]] project README contains more detailed instructions on how
+to link your calendar with Google calendars.
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

@@ -1,0 +1,73 @@
+# -*- doom-docs -*-
+#+title:    :lang scheme
+#+subtitle: A fully conniving family of lisps
+#+created:  July 23, 2019
+#+since:    21.12.0
+
+* Description :unfold:
+This module provides support for the Scheme family of Lisp languages, powered by
+[[https://www.nongnu.org/geiser/geiser_1.html#introduction][geiser]].
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +chez ::
+- +chibi ::
+- +chicken ::
+- +gambit ::
+- +gauche ::
+- +guile ::
+- +kawa ::
+- +mit ::
+- +racket ::
+
+** Packages
+- [[package:flycheck-guile]] if [[module:+guile]] and [[module::checkers syntax]]
+- [[package:geiser]]
+- [[package:geiser-chez]] if [[module:+chez]]
+- [[package:geiser-chibi]] if [[module:+chibi]]
+- [[package:geiser-chicken]] if [[module:+chicken]]
+- [[package:geiser-gambit]] if [[module:+gambit]]
+- [[package:geiser-gauche]] if [[module:+gauche]]
+- [[package:geiser-guile]] if [[module:+guile]]
+- [[package:geiser-kawa]] if [[module:+kawa]]
+- [[package:geiser-mit]] if [[module:+mit]]
+- [[package:geiser-racket]] if [[module:+racket]]
+- [[package:macrostep-geiser]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+Depending on which flags you have enabled on this module, you'll need the
+associated Schemes, namely:
+- [[https://www.gnu.org/software/guile][Guile]] 2.2.0 or better
+- [[https://call-cc.org][Chicken]] 4.8.0 or better
+- [[https://www.gnu.org/software/mit-scheme][MIT/GNU Scheme]] 9.1.1 or better
+- [[https://synthcode.com/scheme/chibi][Chibi Scheme]] 0.7.3 or better
+- [[https://www.scheme.com][Chez Scheme]] 9.4 or better
+
+Their executables must be present in your =$PATH= for [[pkg:geiser]] to work properly.
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+| command           | key / ex command    | description          |
+|-------------------+---------------------+----------------------|
+| ~+scheme/open-repl~ | [[kbd:<leader> o r]], =:repl= | Open the Scheme Repl |
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

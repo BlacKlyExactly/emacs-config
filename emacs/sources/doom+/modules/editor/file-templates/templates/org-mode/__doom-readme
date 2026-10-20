@@ -1,0 +1,162 @@
+# -*- mode: snippet -*-
+# name: Doom module readme                                             
+# --
+:PROPERTIES:
+:ID:       `(doom-docs-generate-id)`
+:END:
+#+title:     `(+file-templates-module-for-path)`
+#+subtitle:  <A one-line quip about this module to display in init.example.el>
+#+created:   `(format-time-string "%B %d, %Y")`
+#+since:     `(format-time-string "%y.%m")`
+
+* Description :unfold:
+$0Replace this with a short (1-2 sentence) description of what this module does.
+This is displayed in the module index.
+
+Then a longer, multiple paragraph description goes here, which should explain
+the purpose of the module and the features/technology(ies) it provides.
+
+** Maintainers
+- [[github:username][username]]
+- [[github:username][username]]
+- [[github:username][username]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+# If a module has no maintainers and can't be casually maintained by Henrik
+# alone, use:
+*This module needs a maintainer.* [[doom-contrib-maintainer:][Become a maintainer?]]
+
+# Otherwise, use:
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+# Flags should be in alphanumerical order.
+- +bar ::
+  A short description of what this flag does and what it might need when
+  enabled.
+- +childframe ::
+  Display X in a [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Child-Frames.html][child frame]] rather than an overlay or tooltip. *Requires GUI
+  Emacs.*
+- +lsp ::
+  Enable LSP support for ~X-mode~. Requires [[module::tools lsp]] and a
+  langserver (supports A, B, and C).
+
+# If this module has no flags, then...
+/This module has no flags./
+
+# If this module has flags but you can't document them now, add a TODO to the
+# heading and use:
+#+begin_quote wip
+This module has flags, but they aren't documented yet. [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+** Packages
+- [[package:org]]
+- [[package:org-contrib]] if [[module:+contrib]]
+- [[package:org-bullets]] unless  [[module:+bullets]]
+- if [[module:+present]]
+  - [[package:centered-window]]
+  - [[package:org-tree-slide]]
+  - [[package:org-re-reveal]]
+
+# If this module installs no packages, then...
+/This module doesn't install any packages./
+
+# If this module installs packages, but you can't document them now, add a TODO
+# to the heading and use:
+#+begin_quote wip
+This module installs packages, but they aren't documented yet. [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+** Hacks
+# Place a list of internal (and potentially unexpected) modifications to
+# included packages:
+- Fixed X which should help you do Y
+- Advised Z to work harder, better, faster, stronger.
+- Tricked the hobbitses into giving me the precious.
+
+# If there aren't any hacks, use:
+/No hacks documented for this module./
+
+# If this module contains hacks, but you can't document them now, add a TODO to
+# the heading and use:
+#+begin_quote wip
+This module's hacks haven't been documented yet. [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+* Installation
+# This section should describe, in-depth, how to set up this module and its
+# dependencies, starting with this line:
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+# ...Then list its external requirements, if any.
+This module requires:
+- ...
+- ...
+- ...
+# And finally, go into detail about how to install them.
+
+# If there are no external requirements, use:
+/This module has no external requirements./
+
+# If there are prerequisites but you can't document them yet, add TODO to the
+# heading and use:
+#+begin_quote wip
+/No installation steps have been documented./ [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+* Usage
+# Walk the user through how this module is used.
+
+# If this is left empty, add TODO to the heading and use:
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+# If this section has incomplete content, add TODO to the heading and use:
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+* TODO Configuration
+# Walk the user through how to configure this module, including any variables it
+# exposes or user-facing configuration API.
+
+# If this is left empty, add TODO to the heading and use:
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+# If this section has incomplete content, add TODO to the heading and use:
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+* Troubleshooting
+# List common issues and any workarounds/solutions, or link to external resources. 
+[[doom-report:][Report an issue?]]
+
+** Common issue
+Solution.
+** Common issue
+Solution.
+** Common issue
+Solution.
+
+# If this is left empty, use:
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+[[doom-contrib-faq:][Ask a question?]]
+
+# This is for adoption, design, or niche questions. More general
+# usage/configuration matters should be covered in the sections above.
+** Question
+Answer
+** Question
+Answer
+** Question
+Answer
+
+# If no questions are available, use
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

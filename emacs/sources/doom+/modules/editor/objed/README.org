@@ -1,0 +1,52 @@
+# -*- doom-docs -*-
+#+title:    :editor objed
+#+subtitle: Text object editing for the innocent
+#+created:  May 30, 2019
+#+since:    21.12.0
+
+* Description :unfold:
+This modules adds [[pkg:objed]], a global minor-mode for navigating and manipulating
+text objects. It combines the ideas of ~versor-mode~ and other editors like Vim
+or Kakoune and tries to align them with regular Emacs conventions.
+
+[[https://github.com/clemera/objed][See the objed project README]] for information on keybinds and usage.
+
+** Maintainers
+*This module needs a maintainer.* [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +manual ::
+  Don't activate [[pkg:objed]] at startup, automatically, leaving it to the user to call
+  [[fn:objed-activate]] (bound to [[kbd:M-SPC]] if using [[module::config default +bindings]]).
+  
+** Packages
+- [[package:objed]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+#+begin_quote warning
+This module is incompatible with [[module::editor evil]]. Do not enable them both at the
+same time or you will get errors.
+#+end_quote
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

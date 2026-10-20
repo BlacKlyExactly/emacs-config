@@ -1,0 +1,70 @@
+# -*- doom-docs -*-
+#+title:    :editor multiple-cursors
+#+subtitle: Make all your mistakes at once
+#+created:  October 13, 2021
+#+since:    21.12.0
+
+* Description :unfold:
+This module adds a multiple cursors implementation to Emacs (two, if you use
+evil) that loosely take after multi-cursors in Atom or Sublime Text.
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- if [[module::editor evil]]
+  - [[package:evil-multiedit]]
+  - [[package:evil-mc]]
+- else
+  - [[package:multiple-cursors]]
+
+** Hacks
+- Attempts to smooth over [[pkg:multiple-cursors]]' incompatibilities with [[pkg:evil]], which
+  is used internally in some third party plugins.
+- Attempts to smooth over [[pkg:evil-mc]]'s incompatibilities with other packages, like
+  [[pkg:lispy]].
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** evil-mc
+- The [[pkg:evil-mc]] keys are under the [[kbd:gz]] prefix, e.g.
+  - [[kbd:gzz]] to toggle new (frozen) cursors at point.
+  - [[kbd:gzt]] to toggle mirroring on and off (or switch to insert mode to activate
+    them).
+  - [[kbd:gzA]] to place cursors at the end of each selected line.
+  - [[kbd:gzI]] will place them at the beginning.
+- There's also the ex command ~:mc/REGEXP/FLAGS~, for laying down cursors by
+  regex.
+
+** evil-multiedit
+Designates "interactive edit" regions. Only the textual changes to them are mirrored.
+
+- [[kbd:M-d]] to iedit the symbol at point. Again to iedit its next match.
+- [[kbd:M-S-d]] to do it backwards.
+- [[kbd:R]] (in visual mode) to iedit all matches of the selection at point in the
+  buffer.
+- Or ~:iedit/REGEX~ to iedit all matches of REGEX.
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

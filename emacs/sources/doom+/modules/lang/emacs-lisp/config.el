@@ -1,0 +1,359 @@
+;;; lang/emacs-lisp/config.el -*- lexical-binding: t; -*-
+
+(defgroup +emacs-lisp nil
+  "Enhances support for Emacs Lisp in Emacs."
+  :group 'doom+)
+
+(defcustom +emacs-lisp-enable-extra-fontification t
+  "If non-nil, highlight special forms, and defined functions and variables."
+  :type 'boolean
+  :group '+emacs-lisp)
+
+(defcustom +emacs-lisp-outline-regexp "[ \t]*;;;\\(;*\\**\\) [^ \t\n]"
+  "Regexp to use for `outline-regexp' in `emacs-lisp-mode'.
+This marks a foldable marker for `outline-minor-mode' in elisp buffers."
+  :type 'regexp
+  :group '+emacs-lisp)
+
+(defvar +emacs-lisp-linter-warnings
+  '(not free-vars    ; don't complain about unknown variables
+        noruntime    ; don't complain about unknown function calls
+        unresolved)  ; don't complain about undefined functions
+  "The value for `byte-compile-warnings' in non-packages.
+
+This reduces the verbosity of flycheck in Emacs configs and scripts, which are
+so stateful that the deluge of false positives (from the byte-compiler,
+package-lint, and checkdoc) can be more overwhelming than helpful.
+
+See `+emacs-lisp-non-package-mode' for details.")
+
+(defvar +emacs-lisp-working-buffer nil
+  "What buffer to evaluate elisp from.
+
+Use `+emacs-lisp/change-working-buffer' to change this. Only applies to
+`+emacs-lisp-eval-fn', which is the eval handler for `emacs-lisp-mode',
+`lisp-interaction-mode', and `lisp-data-mode', by default.")
+
+
+;; `elisp-mode' is loaded at startup. In order to lazy load its config we need
+;; to pretend it isn't loaded
+(defer-feature! elisp-mode emacs-lisp-mode)
+
+
+;;
+;;; Config
+
+(use-package! elisp-mode
+  :interpreter ("doomscript" . emacs-lisp-mode)
+  :config
+  (let ((modes '(emacs-lisp-mode lisp-interaction-mode lisp-data-mode)))
+    (set-repl-handler! modes #'+emacs-lisp/open-repl)
+    (set-eval-handler! modes #'+emacs-lisp-eval-fn)
+    (set-lookup-handlers! `(,@modes help-mode helpful-mode)
+      :definition    #'+emacs-lisp-lookup-definition
+      :documentation #'+emacs-lisp-lookup-documentation)
+    (set-docsets! modes "Emacs Lisp")
+    (set-ligatures! modes :lambda "lambda")
+    (set-formatter! 'lisp-indent #'apheleia-indent-lisp-buffer :modes modes)
+    (set-rotate-patterns! modes
+      :symbols '(("t" "nil")
+                 ("let" "let*")
+                 ("when" "unless")
+                 ("advice-add" "advice-remove")
+                 ("defadvice!" "undefadvice!")
+                 ("add-hook" "remove-hook")
+                 ("add-hook!" "remove-hook!")
+                 ("it" "xit")
+                 ("describe" "xdescribe"))))
+
+  (setq-hook! 'emacs-lisp-mode-hook
+    ;; Emacs' built-in elisp files use a hybrid tab->space indentation scheme
+    ;; with a tab width of 8. Any smaller and the indentation will be
+    ;; unreadable. Since Emacs' lisp indenter doesn't respect this variable it's
+    ;; safe to ignore this setting otherwise.
+    tab-width 8
+    ;; Don't treat autoloads or sexp openers as outline headers, we have
+    ;; hideshow for that.
+    outline-regexp +emacs-lisp-outline-regexp
+    outline-level #'+emacs-lisp-outline-level)
+
+  ;; Introduces logic to improve plist indentation in emacs-lisp-mode.
+  (advice-add #'calculate-lisp-indent :override #'+emacs-lisp--calculate-lisp-indent-a)
+
+  (add-hook! '(emacs-lisp-mode-hook lisp-data-mode-local-vars-hook)
+             ;; Allow folding of outlines in comments
+             #'outline-minor-mode
+             ;; Extend imenu support to Doom constructs
+             #'+emacs-lisp-extend-imenu-h
+             ;; Ensure straight sees modifications to installed packages
+             #'+emacs-lisp-init-straight-maybe-h)
+
+  ;; UX: Both Flycheck's and Flymake's two emacs-lisp checkers produce a *lot*
+  ;;   of false positives in non-packages (like Emacs configs or elisp scripts),
+  ;;   so I disable `checkdoc' (`emacs-lisp-checkdoc', `elisp-flymake-checkdoc')
+  ;;   and set `byte-compile-warnings' to a subset that makes more sense (see
+  ;;   `+emacs-lisp-linter-warnings')
+  (add-hook! '(flycheck-mode-hook flymake-mode-hook) #'+emacs-lisp-non-package-mode)
+
+  (defadvice! +syntax--fix-elisp-flymake-load-path (orig-fn &rest args)
+    "Set load path for elisp byte compilation Flymake backend"
+    :around #'elisp-flymake-byte-compile
+    (let ((elisp-flymake-byte-compile-load-path
+           (append elisp-flymake-byte-compile-load-path load-path)))
+      (apply orig-fn args)))
+
+  ;; Enhance elisp syntax highlighting, by highlighting Doom-specific
+  ;; constructs, defined symbols, and truncating :pin's in `package!' calls.
+  (dolist (mode '(emacs-lisp-mode lisp-data-mode lisp-interaction-mode))
+    (font-lock-add-keywords
+     mode (append `(;; custom Doom cookies
+                    ("^;;;###\\(autodef\\|if\\|package\\)[ \n]" (1 font-lock-warning-face t))
+                    ;; defun* and defun! blocks in `letf!'
+                    ("(\\(defun[!*]\\)\\_>[ \t]*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+                     (1 font-lock-keyword-face)
+                     (2 font-lock-function-name-face nil t)))
+                  ;; highlight defined, special variables & functions
+                  (when +emacs-lisp-enable-extra-fontification
+                    `((+emacs-lisp-highlight-vars-and-faces . +emacs-lisp--face))))))
+ 
+  (defadvice! +emacs-lisp-append-value-to-eldoc-a (fn sym)
+    "Display variable value next to documentation in eldoc."
+    :around #'elisp-get-var-docstring
+    (when-let* ((ret (funcall fn sym)))
+      (if (boundp sym)
+          (concat ret " "
+                  (let* ((truncated " [...]")
+                         (print-escape-newlines t)
+                         (str (symbol-value sym))
+                         (str (prin1-to-string str))
+                         (limit (- (frame-width) (length ret) (length truncated) 1)))
+                    (format (format "%%0.%ds%%s" (max limit 0))
+                            (propertize str 'face 'warning)
+                            (if (< (length str) limit) "" truncated))))
+        ret)))
+
+  (map! :localleader
+        :map (emacs-lisp-mode-map lisp-interaction-mode-map)
+        :desc "Set working buffer" "b" #'+emacs-lisp/change-working-buffer
+        :desc "Expand macro" "m" #'macrostep-expand
+        (:prefix ("d" . "debug")
+          "f" #'+emacs-lisp/edebug-instrument-defun-on
+          "F" #'+emacs-lisp/edebug-instrument-defun-off)
+        (:prefix ("e" . "eval")
+          "b" #'eval-buffer
+          "d" #'eval-defun
+          "e" #'eval-last-sexp
+          "r" #'eval-region
+          "l" #'load-library)
+        (:prefix ("g" . "goto")
+          "f" #'find-function
+          "v" #'find-variable
+          "l" #'find-library)))
+
+
+;; Make quoted symbols easier to distinguish from free variables
+(use-package! highlight-quoted
+  :hook emacs-lisp-mode
+  :hook lisp-data-mode-local-vars)
+
+
+(use-package! ielm
+  :defer t
+  :config
+  (set-lookup-handlers! 'inferior-emacs-lisp-mode
+    :definition    #'+emacs-lisp-lookup-definition
+    :documentation #'+emacs-lisp-lookup-documentation)
+
+  ;; Adapted from http://www.modernemacs.com/post/comint-highlighting/ to add
+  ;; syntax highlighting to ielm REPLs.
+  (setq ielm-font-lock-keywords
+        (append '(("\\(^\\*\\*\\*[^*]+\\*\\*\\*\\)\\(.*$\\)"
+                   (1 font-lock-comment-face)
+                   (2 font-lock-constant-face)))
+                (cl-loop for (matcher . match-highlights)
+                         in (append lisp-el-font-lock-keywords-2
+                                    lisp-cl-font-lock-keywords-2)
+                         collect
+                         `((lambda (limit)
+                             (when ,(if (symbolp matcher)
+                                        `(,matcher limit)
+                                      `(re-search-forward ,matcher limit t))
+                               ;; Only highlight matches after the prompt
+                               (> (match-beginning 0) (car comint-last-prompt))
+                               ;; Make sure we're not in a comment or string
+                               (let ((state (syntax-ppss)))
+                                 (not (or (nth 3 state)
+                                          (nth 4 state))))))
+                           ,@match-highlights)))))
+
+
+;;
+;;; Packages
+
+;;;###package overseer
+(autoload 'overseer-test "overseer" nil t)
+;; Properly lazy load overseer by not loading it so early:
+(remove-hook 'emacs-lisp-mode-hook #'overseer-enable-mode)
+
+
+(use-package! checkdoc  ; built-in
+  :defer t
+  :config
+  ;; HACK: Complaining that highlighted symbols are ambiguous (is it a variable,
+  ;;   function, option, etc?) is silly, and satisfying the checker involves
+  ;;   prefixing highlighted symbols with one of a hardcoded list of words like
+  ;;   "function", "variable", or "option". Silly. Rigid. Turn it off.
+  ;; REVIEW: Get rid of the check or improve/modularize the heuristics upstream.
+  (setq checkdoc--disambiguate-symbol-flag nil)
+
+  ;; HACK: Checkdoc complains about *any* function that doesn't have a
+  ;;   docstring. With `checkdoc-force-docstrings-flag' off, it still complains
+  ;;   about interactive commands not having a docstring, but I want it to
+  ;;   complain for all docstring-less functions *except* private ones!
+  ;; REVIEW: PR more `checkdoc-force-docstrings-flag' settings upstream?
+  (defadvice! +emacs-lisp--checkdoc-defun-info-a (fn &rest args)
+    :around #'checkdoc-this-string-valid
+    (let* ((fp (checkdoc-defun-info))
+           (checkdoc--interactive-docstring-flag
+            (and checkdoc--interactive-docstring-flag
+                 (not (nth 1 fp))  ; not a variable
+                 (not (string-match-p "--" (nth 0 fp))))))
+      (apply fn args))))
+
+
+(use-package! package-lint
+  :when (modulep! :checkers syntax)
+  :defer t
+  :config
+  (setq package-lint--sane-prefixes
+        (concat "\\`\\(?:doom-\\(?:package\\|source\\|module\\)\\)\\|"
+                (with-memoization (get 'package-lint--sane-prefixes 'initial-value)
+                  package-lint--sane-prefixes))))
+
+
+(use-package! flycheck-package
+  :when (modulep! :checkers syntax -flymake)
+  :after flycheck
+  :config (flycheck-package-setup))
+
+
+(use-package! package-lint-flymake
+  :when (modulep! :checkers syntax +flymake)
+  :after flymake
+  :config (package-lint-flymake-setup))
+
+
+(use-package! buttercup
+  :defer t
+  :minor ("/test[/-].+\\.el$" . buttercup-minor-mode)
+  :preface
+  ;; buttercup.el doesn't define a keymap for `buttercup-minor-mode', as we have
+  ;; to fool its internal `define-minor-mode' call into thinking one exists, so
+  ;; it will associate it with the mode.
+  (defvar buttercup-minor-mode-map (make-sparse-keymap))
+  :config
+  (set-popup-rule! "^\\*Buttercup\\*$" :size 0.45 :select nil :ttl 0)
+  (set-yas-minor-mode! 'buttercup-minor-mode)
+  (when (featurep 'evil)
+    (add-hook 'buttercup-minor-mode-hook #'evil-normalize-keymaps))
+  (map! :localleader
+        :map buttercup-minor-mode-map
+        :prefix "t"
+        "t" #'+emacs-lisp/buttercup-run-file
+        "a" #'+emacs-lisp/buttercup-run-project
+        "s" #'buttercup-run-at-point))
+
+
+(use-package! helpful
+  ;; a better *help* buffer
+  :commands helpful--read-symbol
+  :init
+  ;; Make `apropos' et co search more extensively. They're more useful this way.
+  (setq apropos-do-all t)
+
+  (global-set-key [remap describe-function] #'helpful-callable)
+  (global-set-key [remap describe-command]  #'helpful-command)
+  (global-set-key [remap describe-variable] #'helpful-variable)
+  (global-set-key [remap describe-key]      #'helpful-key)
+  ;; (global-set-key [remap describe-symbol]   #'helpful-symbol)
+
+  ;; HACK: Patch apropos buttons to call helpful instead of help
+  (after! apropos
+    (dolist (fun-bt '(apropos-function apropos-macro apropos-command))
+      (button-type-put
+       fun-bt 'action (fn! (helpful-callable (button-get % 'apropos-symbol)))))
+    (dolist (var-bt '(apropos-variable apropos-user-option))
+      (button-type-put
+       var-bt 'action (fn! (helpful-variable (button-get % 'apropos-symbol))))))
+
+  ;; DEPRECATED: Remove when support for 29 is dropped.
+  (when (= emacs-major-version 29)
+    (defadvice! +emacs-lisp--find-function-search-for-symbol-save-excursion-a (fn &rest args)
+      "Suppress cursor movement by `find-function-search-for-symbol'.
+
+Addresses an unwanted side-effect in `find-function-search-for-symbol' on Emacs
+29 where the cursor is moved to a variable's definition if it's defined in the
+current buffer."
+      :around #'find-function-search-for-symbol
+      (let (buf pos)
+        (letf! (defadvice find-library-name (:filter-return (filename))
+                 (with-current-buffer (find-file-noselect filename)
+                   (setq buf (current-buffer)
+                         pos (point)))
+                 filename)
+          (prog1 (apply fn args)
+            (when (buffer-live-p buf)
+              (with-current-buffer buf (goto-char pos))))))))
+  :config
+  ;; Add Doom's core and module demo files, so additional demos can be specified
+  ;; by end-users (in $DOOMDIR/demos.org), by modules (modules/X/Y/demos.org),
+  ;; or Doom's core (lisp/demos.org).
+  (dolist (file (doom-module-locate-paths (remove '(:user) (doom-module-list)) "demos.org"))
+    (add-to-list 'helpful-demos-files file))
+  ;; The user's demos.org should be first in the list so that
+  ;; `elisp-demos-add-demo' will add new ones to that instead of some module's.
+  (add-to-list 'helpful-demos-files (expand-file-name "demos.org" doom-user-dir))
+
+  (cond ((modulep! :completion ivy)
+         (setq counsel-describe-function-function #'helpful-callable
+               counsel-describe-variable-function #'helpful-variable
+               counsel-descbinds-function #'helpful-callable))
+        ((modulep! :completion helm)
+         (setq helm-describe-function-function #'helpful-function
+               helm-describe-variable-function #'helpful-variable)))
+
+  ;; HACK: Open help:* links with helpful-* instead of describe-*
+  ;; REVIEW: PR this upstream (use variables like other packages?)
+  (defadvice! +emacs-lisp--use-helpful-a (fn &rest args)
+    :around #'org-link--open-help
+    (letf! ((#'describe-function #'helpful-function)
+            (#'describe-variable #'helpful-variable))
+      (apply fn args)))
+
+  ;; Keep a record of buffers so our next/previous commands work.
+  (advice-add #'helpful--buffer :filter-return #'+emacs-lisp-record-new-buffers-a)
+
+  (map! :map helpful-mode-map
+        :ng "o"  #'link-hint-open-link
+        :n  "gr" #'helpful-update
+        :n "C-o" #'+emacs-lisp/helpful-previous
+        :n [C-i] #'+emacs-lisp/helpful-next
+        :n "<" #'+emacs-lisp/helpful-previous
+        :n ">" #'+emacs-lisp/helpful-next
+        "C-c C-b" #'+emacs-lisp/helpful-previous
+        "C-c C-f" #'+emacs-lisp/helpful-next
+        "l" #'+emacs-lisp/helpful-previous
+        "r" #'+emacs-lisp/helpful-next))
+
+
+(use-package! let-completion
+  :hook (emacs-lisp-mode . let-completion-mode))
+
+
+;;
+;;; Project modes
+
+(def-project-mode! +emacs-lisp-ert-mode
+  :modes '(emacs-lisp-mode)
+  :match "/test[/-].+\\.el$"
+  :add-hooks '(overseer-enable-mode))

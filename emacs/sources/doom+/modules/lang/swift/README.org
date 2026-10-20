@@ -1,0 +1,56 @@
+# -*- doom-docs -*-
+#+title:    :lang swift
+#+subtitle: We asked for emoji variables?
+#+created:  June 15, 2015
+#+since:    0.7
+
+* Description :unfold:
+This module adds support for the [[https://developer.apple.com/swift/][Swift programming language]] to Doom Emacs.
+
+** Maintainers
+*This module needs a maintainer.* [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +lsp ::
+  Enable LSP support for ~swift-mode~. Requires [[module::tools lsp]] and a
+  langserver (supports sourcekit).
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires [[module::tools tree-sitter]].
+
+** Packages
+- [[package:swift-mode]]
+- [[package:swift-ts-mode]] if [[module:+tree-sitter]]
+- [[package:lsp-sourcekit]] if [[module:+lsp]]
+- [[package:company-sourcekit]] if [[module::completion company]]
+- [[package:flycheck-sourcekit]] if [[module::checkers syntax -flymake]]
+
+** Hacks
+/No hacks documented for this module./
+
+* TODO Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+** Formatter
+Formatting is handled using the [[module::editor format]] module via
+[[https://github.com/nicklockwood/SwiftFormat#command-line-tool][swiftformat]].
+
+#+begin_quote wip
+/This module's prerequisites are not documented./ [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

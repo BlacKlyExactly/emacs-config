@@ -1,0 +1,77 @@
+# -*- doom-docs -*-
+#+title:    :lang csharp
+#+subtitle: Unity, .NET, and Mono shenanigans
+#+created:  February 20, 2017
+#+since:    2.0.0
+
+* Description :unfold:
+This module adds C# support to Emacs, together with LSP support (via
+[[https://github.com/dotnet/roslyn/tree/main/src/LanguageServer/Microsoft.CodeAnalysis.LanguageServer][roslyn-language-server]] or [[https://github.com/OmniSharp/omnisharp-roslyn][omnisharp-roslyn]]).
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +dotnet ::
+  Enable Dotnet transient interface with Sharper
+- +lsp ::
+  Enable LSP support for ~csharp-mode~ and ~csharp-ts-mode~. Requires
+  [[module::tools lsp]] and a langserver (e.g. [[https://github.com/dotnet/roslyn/tree/main/src/LanguageServer/Microsoft.CodeAnalysis.LanguageServer][roslyn-language-server]] or
+  [[https://github.com/OmniSharp/omnisharp-roslyn][omnisharp-roslyn]]).
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires Emacs 29.1+ and [[module::tools tree-sitter]].
+- +unity ::
+  Enable special support for the [[https://unity.com/][Unity game engine]] (particularly, support for
+  HLSL shaders).
+
+** Packages
+- [[package:csharp-mode]]
+- [[package:csproj-mode]]
+- [[package:shader-mode]] if [[module:+unity]]
+- [[package:sharper]] if [[module:+dotnet]]
+- [[package:sln-mode]]
+  
+** Hacks
+/No hacks documented for this module./
+
+* TODO Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires:
+- Mono (on UNIX platforms)
+- .NET SDKs (on Windows)
+- .NET Core 1.X - 3.X or .NET 5 for cross platform
+- omnisharp-rosyln (if [[module:+lsp]])
+- csharpier (if [[module::editor format]])
+
+** mono
+*** TODO MacOS
+
+*** Arch Linux
+#+begin_src sh
+pacman --needed --noconfirm -S mono
+#+end_src
+
+*** TODO NixOS
+
+** csharpier
+#+begin_src shell
+dotnet tool install csharpier -g
+#+end_src
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

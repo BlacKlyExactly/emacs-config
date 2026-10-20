@@ -1,0 +1,16 @@
+;; -*- no-byte-compile: t; -*-
+;;; lang/common-lisp/packages.el
+
+(when (package! sly :pin "3ffa216d0818972f7a7fea38a566a6b570349f3b")
+  (package! sly-asdf :pin "c1fa52dadb2f453243dc522203b7a883adef63fb")
+  (package! sly-quicklisp :pin "34c73d43dd9066262387c626c17a9b486db07b2d")
+  (package! sly-stepper :recipe (:host github :repo "joaotavora/sly-stepper"
+                                 :files (:defaults "*.lisp" "*.asd")))
+  (package! sly-macrostep :pin "5113e4e926cd752b1d0bcc1508b3ebad5def5fad")
+  (package! sly-repl-ansi-color :pin "b9cd52d1cf927bf7e08582d46ab0bcf1d4fb5048")
+  (package! sly-overlay :pin "345b554ad005421b447b2e64c34314ee79f5f8b9"))
+
+(when (and (modulep! +tree-sitter)
+           (treesit-available-p)
+           (version<= "30.2" emacs-version))
+  (package! lisp-ts-mode :pin "a6868638e7e46ca8e9a1e1825b7bbdc38c241fa8"))

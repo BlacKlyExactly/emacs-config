@@ -1,0 +1,84 @@
+# -*- doom-docs -*-
+#+title:    :lang common-lisp
+#+subtitle: If you've seen one lisp, you've seen them all
+#+created:  June 13, 2018
+#+since:    21.12.0
+
+* Description :unfold:
+This module provides support for [[https://lisp-lang.org/][Common Lisp]] and the [[pkg:sly]] development
+environment. Common Lisp is not a single language but a specification, with many
+competing compiler implementations. By default, [[http://www.sbcl.org/][Steel Bank Common Lisp]] (SBCL) is
+assumed to be installed, but this can be configured.
+
+Common Lisp benefits from a mature specification and rich standard library.
+Thanks to its powerful REPL and debugger, it boasts an "interactive programming"
+style often unseen in other languages. Compiled Common Lisp programs are trusted
+to run unmodified for a long time.
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and handling of ~FORMAT~
+  strings. Requires [[module::tools tree-sitter]].
+
+** Packages
+- [[package:lisp-ts-mode]] if [[module:+tree-sitter]]
+- [[package:sly]]
+- [[package:sly-asdf]]
+- [[package:sly-quicklisp]]
+- [[package:sly-stepper]]
+- [[package:sly-macrostep]]
+- [[package:sly-repl-ansi-color]]
+- [[package:sly-overlay]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires [[http://www.sbcl.org/][SBCL]].
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+This module does not integrate with [[module::tools lsp]]. Sly (and SLIME before it) is
+considered the defacto development environment for Common Lisp and provides much
+of what is normally expected of an LSP, plus tight integration with the REPL and
+Emacs.
+
+** Sly
+Using this module is mostly a matter of using Sly. Consider reading [[http://joaotavora.github.io/sly/#A-SLY-tour-for-SLIME-users][the Sly
+Tour]].
+
+A Sly session will be started when you open a =.lisp= file. Use [[kbd:<localleader> ']] to switch to the
+REPL minibuffer.
+
+** org-mode
+This module enables the evaluation of =lisp= source blocks in Org Mode. However, a
+Sly session must be running for this to work. Use M-x:sly to start one, if you
+haven't already.
+
+** formatter
+By enabling [[module::editor format]], [[fns:apheleia-indent-lisp-buffer]] will be used to
+format the current buffer.
+
+Enable [[module::editor format +onsave]] to format the buffer on save.
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+To get Sly to use something other than SBCL, set var:inferior-lisp-program to
+its path (or name, if it's in your =$PATH=).
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

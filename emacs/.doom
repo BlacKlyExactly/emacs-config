@@ -1,0 +1,14 @@
+;; -*- mode: lisp-data -*-
+"2.2.4"
+((name . doomemacs/core)
+ (version . ,(doom-version))
+ (homepage . "https://doomemacs.org")
+
+ (commits (style doom) (scopes "cli" "lib" "docs"))
+
+ (make
+  ("LICENSE"
+   (lambda (_)
+     (insert-file-contents (dir! "LICENSE"))
+     (and (re-search-forward "(c) 2014-\\(20[0-9]\\{2\\}\\) Henrik")
+          (replace-match (format-time-string "%Y") t t nil 1))))))

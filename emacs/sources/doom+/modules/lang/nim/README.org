@@ -1,0 +1,69 @@
+# -*- doom-docs -*-
+#+title:    :lang nim
+#+subtitle: Python + lisp at the speed of C
+#+created:  May 08, 2018
+#+since:    21.12.0
+
+* Description :unfold:
+This module adds [[https://nim-lang.org][Nim]] support to Doom Emacs.
+
+- Code completion ([[pkg:nimsuggest]] + [[pkg:company]])
+- Syntax checking ([[pkg:nimsuggest]] + [[pkg:flycheck]])
+- Org babel support ([[pkg:ob-nim]])
+
+** Maintainers
+*This module needs a maintainer.* [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- [[package:flycheck-nim]] if [[module::checkers syntax]]
+- [[package:nim-mode]]
+
+** Hacks
+- [[package:nimsuggest]] was modified to strip invalid characters from its temp file paths
+  (which would break nimsuggest on Windows systems).
+- [[package:nim-mode]] was modified to fail gracefully if =nimsuggest= (the executable)
+  isn't available.
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires:
+- ~nim~, for building & evaluation.
+- ~nimsuggest~, for code completion, syntax checking, and jump-to-definition
+  functionality.
+
+** Nim
+=choosenim= is an installer and version manager for the Nim programming
+language. You can install the latest stable release of Nim by running the
+following in your terminal and following the onscreen instructions:
+#+begin_src sh
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+#+end_src
+
+Alternatively, nim is usually available through your OS's package manager:
+- MacOS: ~$ brew install nim~
+- Arch Linux: ~$ pacman --needed --noconfirm -S nim nimble~
+- openSUSE: ~$ zypper install nim~
+
+** Formatter
+Formatting is handled using the [[module::editor format]] module via nimpretty
+(included with Nim).
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

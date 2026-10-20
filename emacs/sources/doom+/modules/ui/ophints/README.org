@@ -1,0 +1,49 @@
+# -*- doom-docs -*-
+#+title:    :ui ophints
+#+subtitle: An indicator for “what did I just do?”
+#+created:  June 04, 2017
+#+since:    2.0.0
+
+* Description :unfold:
+This module provides op-hints (operation hinting), i.e. visual feedback for
+certain editing operations. It highlights regions of text that the last
+operation (like yank) acted on.
+
+Uses [[pkg:evil-goggles]] for evil users and [[pkg:goggles]]
+otherwise.
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- [[package:evil-goggles]] if [[module::editor evil]]
+- [[package:goggles]] unless [[module::editor evil]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

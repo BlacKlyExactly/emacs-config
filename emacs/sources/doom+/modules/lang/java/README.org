@@ -1,0 +1,149 @@
+# -*- doom-docs -*-
+#+title:    :lang java
+#+subtitle: The poster child for carpal tunnel syndrome
+#+created:  January 16, 2017
+#+since:    1.3
+
+* Description :unfold:
+This module adds [[https://www.java.com][Java]] support to Doom Emacs, including ~android-mode~ and
+~groovy-mode~.
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +lsp ::
+  Enable LSP support for ~java-mode~. Requires [[module::tools lsp]] and a
+  langserver (supports eclipse.jdt.ls).
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires [[module::tools tree-sitter]].
+
+** Packages
+- [[package:android-mode]]
+- [[package:groovy-mode]]
+- if [[module:+lsp]] and not [[module::tools lsp +eglot]]
+  - [[package:lsp-java]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires:
+- [[https://www.oracle.com/java/technologies/downloads/][Java SDK]]
+- The LSP test runner requires [[module::tools debugger +lsp]] (requires [[pkg:dap-mode]])
+
+** OpenJDK 11
+*** Ubuntu
+#+begin_src sh
+apt-get install openjdk-11-jdk-headless
+#+end_src
+
+*** Fedora
+#+begin_src sh
+dnf install java-11-openjdk
+#+end_src
+
+** Oracle JDK 11
+*** Ubuntu
+#+begin_src sh
+add-apt-repository ppa:linuxuprising/java
+apt update
+apt install oracle-java11-installer
+apt install oracle-java11-set-default
+#+end_src
+
+*** Fedora
+#+begin_src sh
+curl -O https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+tar zxvf openjdk-11.0.2_linux-x64_bin.tar.gz
+sudo mv jdk-11.0.2/ /usr/local/
+#+end_src
+
+Open =/etc/profile.d/jdk11.sh= as root and add:
+#+begin_src sh
+export JAVA_HOME=/usr/local/jdk-11.0.2
+export PATH=$PATH:$JAVA_HOME/bin
+#+end_src
+
+Save the file and source it:
+#+begin_src sh
+source /etc/profile.d/jdk11.sh
+java -version
+#+end_src
+
+** Multiple Java Versions
+It is common to need support for multiple Java versions. You can use a generic
+tool like [[https://github.com/shyiko/jabba][jabba]] to install and manage multiple Java versions on any OS.
+
+To have a different version of Java per-project, it is recommended you use
+[[https://github.com/direnv/direnv][direnv]] and [[module::tools direnv]]; create a =.envrc= in the root of the project pointing
+to the Java installation:
+#+begin_src sh
+PATH_add ~/.jabba/jdk/adopt@1.11.0-3
+JAVA_HOME=~/.jabba/jdk/adopt@1.11.0-3
+#+end_src
+
+And then run ~$ direnv allow .~ in the project directory. The [[module::tools direnv]]
+module will automatically source this environment before activating LSP servers.
+
+** Formatter
+[[module::editor format]] uses [[https://github.com/google/google-java-format][google-java-format]] to handle formatting.
+
+To install, grab the latest =all-deps.jar= release from the above, put it
+somewhere and create a script similar to the below:
+
+=/usr/local/bin/google-java-format=
+#+begin_src shell
+java -jar /path/to/google-java-format-all-deps.jar
+#+end_src
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** [[module:+lsp]] features
+According to [[https://github.com/emacs-lsp/lsp-java]], you get:
+- As you type reporting of parsing and compilation errors (via [[pkg:flycheck]] or
+  [[pkg:lsp-ui]])
+- Code completion ([[pkg:company-lsp]] or complete-at-point)
+- Javadoc hovers ([[pkg:lsp-ui]])
+- Code actions ([[pkg:lsp-ui]])
+- Code outline ([[pkg:imenu]])
+- Code navigation ([[pkg:xref]])
+- Code lens for references/implementations ([[pkg:xref]])
+- Highlights
+- Code formatting
+- Maven pom.xml project support
+- Limited Gradle support
+- Visual debugger ([[pkg:dap-mode]])
+- Test runner ([[pkg:dap-mode]])
+- Project explorer integration ([[pkg:treemacs]])
+- Integration with [[https://start.spring.io/][Spring Initializr]]
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** [[module:+lsp]]
+Install the eclipse server by executing ~M-x lsp-install-server~ and selecting
+=jdtls=. After that any newly opened =java= files should start the LSP server
+automatically.
+
+To update the server, perform ~SPC u M-x lsp-install-server~.
+
+Note that if you change Java version you may need to remove the LSP server and
+install it again. You can do this with ~M-x +lsp/uninstall-server~ followed by
+~M-x lsp-install-server~.
+
+Enable the [[module::tools debugger +lsp]] module to get test runner support.
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

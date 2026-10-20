@@ -1,0 +1,10 @@
+# -*- doom-docs -*-
+#+title:   :editor
+#+created: July 30, 2021
+#+since:   21.12.0
+
+* Description
+For modules concerned with the insertion and editing of text. Amen.
+
+* Frequently asked questions
+/This category has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

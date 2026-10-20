@@ -1,0 +1,82 @@
+# -*- doom-docs -*-
+#+title:    :ui window-select
+#+subtitle: Visually switch windows
+#+created:  October 08, 2017
+#+since:    2.0.7
+
+* Description :unfold:
+This module provides several methods for selecting windows without the use of
+the mouse or spatial navigation (e.g. [[kbd:C-w {h,j,k,l}]]).
+
+The command ~other-window~ is remapped to either [[pkg:switch-window]] or [[pkg:ace-window]],
+depending on which backend you've enabled. It is bound to [[kbd:C-x o]] (and [[kbd:C-w C-w]] for
+evil users).
+
+It also provides numbered windows and selection with the [[pkg:winum]] package, if
+desired. Evil users can jump to window N in [[kbd:C-w <N>]] (where N is a number between
+0 and 9). Non evil users have [[kbd:C-x w <N>]] instead.
+
+** Maintainers
+/This module has no dedicated maintainers./ [[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +numbers ::
+  Enable numbered windows and window selection (using [[pkg:winum]]).
+- +switch-window ::
+  Use the [[pkg:switch-window]] package as the backend, instead of ace-window ([[pkg:avy]]).
+
+** Packages
+- [[package:ace-window]] unless [[module:+switch-window]]
+- [[package:switch-window]] if [[module:+switch-window]]
+- [[package:winum]] if [[module:+numbers]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+This module provides two backends, both providing the same functionality, but
+with different visual cues. They are [[pkg:ace-window]] and [[pkg:switch-window]].
+
+** ace-window
+The first character of the buffers changes to a highlighted, user-selectable
+character.
+
+- *Pros:* the content of the buffers are always visible.
+- *Cons:* The display characters are small and difficult to see (see below for a
+  way to enlarge them).
+ 
+*** Custom font-face example
+This changes the ace-window display to show a white letter with a red
+background. The box attribute adds some padding:
+#+begin_src emacs-lisp
+(custom-set-faces!
+  '(aw-leading-char-face
+    :foreground "white" :background "red"
+    :weight bold :height 2.5 :box (:line-width 10 :color "red")))
+#+end_src 
+
+** switch-window
+Replaces the entire buffer with large letters.
+
+- *Pros:* The displayed characters are /really/ easy to see.
+- *Cons:* You can't see the contents of the buffers.
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

@@ -1,0 +1,60 @@
+# -*- doom-docs -*-
+#+title:    :editor fold
+#+subtitle: What you can't see won't hurt you
+#+created:  May 15, 2019
+#+since:    21.12.0
+
+* Description :unfold:
+This module marries [[pkg:hideshow]], [[pkg:vimish-fold]], and ~outline-minor-mode~ to bring you
+marker, indent and syntax-based code folding for as many languages as possible.
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- [[package:vimish-fold]]
+- [[package:evil-vimish-fold]] if [[module::editor evil]]
+- [[package:treesit-fold]] if [[module::tools tree-sitter]]
+
+** TODO Hacks
+#+begin_quote wip
+This module's hacks haven't been documented yet. [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+Emacs keybinds when [[module::editor evil +everywhere]] is disabled:
+| Keybind            | Description               |
+|--------------------+---------------------------|
+| [[kbd:C-c C-f C-f]]        | Fold region               |
+| [[kbd:C-c C-f C-u]] or [[kbd:C `]] | Unfold region             |
+| [[kbd:C-c C-f C-d]]        | Delete folded region      |
+| [[kbd:C-c C-f C-a C-f]]    | Fold all regions          |
+| [[kbd:C-c C-f C-a C-u]]    | Unfold all regions        |
+| [[kbd:C-c C-a C-d]]        | Delete all folded regions |
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+- Sometimes, an unfolded region won't fold back with [[kbd:C-c C-f C-f]]. To bypass this
+  bug you must delete the folded region ([[kbd:C-c C-f C-d]]) and then fold it ([[kbd:C-c C-f
+  C-f]]) again.
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

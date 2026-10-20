@@ -1,0 +1,71 @@
+# -*- doom-docs -*-
+#+title:    :lang javascript
+#+subtitle: all(hope(abandon(ye(who(enter(here))))))
+#+created:  January 16, 2017
+#+since:    1.3
+
+* Description :unfold:
+This module adds [[https://www.javascript.com/][JavaScript]] and [[https://www.typescriptlang.org/][TypeScript]] support to Doom Emacs.
+
+- JSX/TSX support (requires [[module:+tree-sitter]] and Emacs 29.1+)
+- LSP Integration
+  - Code completion (with [[module::completion corfu]] (recommended) or
+    [[module::completion company]])
+  - Syntax checking (with [[module::checkers syntax]])
+  - Jump-to-definitions and references support
+- Code formatting (with [[module::editor format]] and [[https://prettier.io/docs/en/install.html][prettier]])
+- REPL support (with [[pkg:nodejs-repl]] and/or [[module::tools eval]])
+
+** Maintainers
+- [[github:elken]]
+- [[github:hlissner]]
+- [[github:iyefrat]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +lsp ::
+  Enable LSP support for ~js-mode~, ~js-ts-mode~, ~typesript-mode~, and
+  ~typescript-ts-mode. Requires [[module::tools lsp]] and a langserver
+  (supports ts-ls and deno-ls).
+- +tree-sitter ::
+  Leverages tree-sitter for better syntax highlighting and structural text
+  editing. Requires [[module::tools tree-sitter]]. Requires Emacs 29.1+.
+  Required for JSX/TSX support.
+
+** Packages
+- [[package:nodejs-repl]]
+- [[package:typescript-mode]] unless [[module:+tree-sitter]]
+
+** TODO Hacks
+#+begin_quote wip
+This module's hacks haven't been documented yet. [[doom-contrib-module:][Document them?]]
+#+end_quote
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires [[https://nodejs.org/en/][NodeJS]] and one of [[https://www.npmjs.com/][NPM]] or [[https://yarnpkg.com/][Yarn]] in your =$PATH=.
+
+- MacOS: ~$ brew install node~
+- Arch Linux: ~$ pacman --needed --noconfirm -S nodejs npm~
+- openSUSE: ~$ zypper install nodejs npm~
+
+** Formatter
+Formatting is handled using the [[module::editor format]] module via [[https://prettier.io/docs/en/install.html][prettier]].
+
+* TODO Usage
+#+begin_quote wip
+This module has no usage documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

@@ -1,0 +1,67 @@
+# -*- doom-docs -*-
+#+title:    :term eshell
+#+subtitle: The elisp shell that works everywhere
+#+created:  February 20, 2017
+#+since:    2.0.0
+
+* Description :unfold:
+This module provides additional features for the built-in [[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][Emacs Shell]]
+
+The Emacs Shell or [[pkg:eshell]] is a shell-like command interpreter implemented in
+Emacs Lisp. It is an alternative to traditional shells such as =bash=, =zsh=,
+=fish=, etc. that is built into Emacs and entirely cross-platform.
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- [[package:eshell-did-you-mean]]
+- [[package:eshell-up]]
+- [[package:eshell-z]]
+- [[package:esh-help]]
+- [[package:shrink-path]]
+- if [[module::completion company]]
+  - [[package:fish-completion]]
+  - [[package:bash-completion]]
+
+** Hacks
+- Even with ~fish-completion-fallback-on-bash-p~ non-nil, fish must be installed
+  for bash completion to work. This has been circumvented.
+- [[package:eshell-did-you-mean]] does not work on first invocation, so we manually invoke
+  it once.
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+This module requires either [[https://fishshell.com/][Fish shell]] or [[https://www.gnu.org/software/bash/][Bash]] for code completion.
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+- Command completion with Company
+- =fish=-style prompt with Git integration
+- [[https://github.com/rupa/z][=z=]]-like directory jumping
+- Command-not-found recommendations
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+** TERM name
+By default, [[pkg:eshell]] sets the =$TERM= variable to ~"xterm-256color"~, which helps
+with rendering various colours. As eshell is /not/ a terminal emulator, these
+will not always work 100%. Modifying ~eshell-term-name~ to your liking may help.
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

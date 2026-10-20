@@ -1,0 +1,80 @@
+# -*- doom-docs -*-
+#+title:    :ui treemacs
+#+subtitle: A sidebar for all the things
+#+created:  June 09, 2018
+#+since:    21.12.0
+
+* Description :unfold:
+[[pkg:treemacs][Treemacs]] is a file and project explorer similar to NeoTree or vim's NerdTree,
+but largely inspired by the Project Explorer in Eclipse. It shows the file
+system outlines of your projects in a simple tree layout allowing quick
+navigation and exploration, while also possessing basic file management
+utilities. It includes:
+
+- Integration with Git (if [[module::tools magit]] is enabled)
+- Integration with Evil (if [[module::editor evil +everywhere]] is enabled)
+- Workspace awareness (if [[module::ui workspaces]] is enabled)
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+- +lsp ::
+  Enable ~lsp-treemacs~ integration and add shortcuts for common commands.
+
+** Packages
+- [[package:lsp-treemacs]] if [[module:+lsp]]
+- [[package:treemacs]]
+- [[package:treemacs-nerd-icons]]
+- [[package:treemacs-evil]] if [[module::editor evil +everywhere]]
+- [[package:treemacs-magit]] if [[module::tools magit]]
+- [[package:treemacs-persp]] if [[module::ui workspaces]]
+- [[package:treemacs-projectile]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+If =python3= is present on your =$PATH=, [[pkg:treemacs]] will use it to display git
+status for files.
+
+* TODO Usage
+#+begin_quote wip
+/This module's usage documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+The project bar can be opened using [[kbd:SPC o p]].
+
+| Keybind | Description                                                      |
+|---------+------------------------------------------------------------------|
+| [[kbd:o s]]     | Open a horizontal dired buffer on the currently highlighted node |
+| [[kbd:o v]]     | Open a vertical dired buffer on the currently highlighted node   |
+
+* TODO Configuration
+#+begin_quote wip
+/This module's configuration documentation is incomplete./ [[doom-contrib-module:][Complete it?]]
+#+end_quote
+
+The variable ~+treemacs-git-mode~ sets the type of git integration that treemacs
+has.
+
+There are 3 possible values:
+1. ~'simple~ (the default), which highlights only files based on their git
+   status, and is slightly faster,
+2. ~'extended~, which highlights both files and directories, but requires
+   python,
+3. ~'deferred~, same as extended, but highlights asynchronously.
+
+#+begin_quote warning
+~+treemacs-git-mode~ must be set before treemacs is loaded.
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]

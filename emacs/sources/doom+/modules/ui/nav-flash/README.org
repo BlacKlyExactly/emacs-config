@@ -1,0 +1,54 @@
+# -*- doom-docs -*-
+#+title:    :ui nav-flash
+#+subtitle: Blink after big motions
+#+created:  June 04, 2017
+#+since:    2.0.0
+
+* Description :unfold:
+This module flashes the line around the cursor after any significant motion, to
+make it easy to follow after big operations.
+
+#+begin_quote aside
+Tremendously helpful on large, 1600p+ or 4K displays.
+#+end_quote
+
+** Maintainers
+- [[github:hlissner]]
+
+[[doom-contrib-maintainer:][Become a maintainer?]]
+
+** Module flags
+/This module has no flags./
+
+** Packages
+- [[package:nav-flash]]
+
+** Hacks
+/No hacks documented for this module./
+
+* Installation
+[[id:01cffea4-3329-45e2-a892-95a384ab2338][Enable this module in your ~doom!~ block.]]
+
+/This module has no external requirements./
+
+* Usage
+By default, [[pkg:nav-flash]] will be triggered whenever [[fn:recenter]] is called or an entry
+is added to the jump-list (managed by [[pkg:better-jumper]]).
+
+[[fn:recenter]] is called after many hooks and commands, such as:
+- [[var:better-jumper-post-jump-hook]]
+- [[var:org-follow-link-hook]]
+- [[var:imenu-after-jump-hook]]
+- [[var:counsel-grep-post-action-hook]]
+- [[var:dumb-jump-after-jump-hook]]
+
+* TODO Configuration
+#+begin_quote wip
+This module has no configuration documentation yet. [[doom-contrib-module:][Write some?]]
+#+end_quote
+
+* Troubleshooting
+/There are no known problems with this module./ [[doom-report:][Report one?]]
+
+* Frequently asked questions
+/This module has no FAQs yet./ [[doom-contrib-faq:][Ask one?]]
