@@ -88,6 +88,7 @@
 
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 16))
 
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (defun my/apply-frame-transparency (&optional frame)
   "Apply macOS transparency parameters to FRAME (defaults to selected frame)."
@@ -100,8 +101,6 @@
 (unless (daemonp)
   (add-hook 'window-setup-hook #'my/apply-frame-transparency))
 
-;; Apply transparency immediately for non-daemon graphical startup,
-;; where neither after-make-frame-functions nor window-setup-hook fires.
 (when (display-graphic-p)
   (my/apply-frame-transparency))
 
@@ -158,12 +157,10 @@
         '(:includeCompletionsForModuleExports t
           :includeCompletionsForImportStatements t)))
 
-;; Default indentation: 2 spaces, no tabs
 (setq-default indent-tabs-mode nil
               tab-width 2
               standard-indent 2)
 
-;; JavaScript / TypeScript
 (after! typescript-ts-mode
   (setq typescript-ts-mode-indent-offset 2))
 
@@ -178,8 +175,121 @@
             (setq-local typescript-indent-level 2)
             (setq-local indent-tabs-mode nil)))
 
-(setq treemacs-project-follow-mode nil)
+(setq treemacs-project-follow-mode 1)
 
 (use-package! jtsx
   :mode ("\\.tsx\\'" . jtsx-tsx-mode)
   :hook (jtsx-tsx-mode . lsp-deferred))
+
+(setq display-line-numbers-type 'relative)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+
+(defvar my/vterm-terminals
+  '("Web" "Api" "Worker" "Misc"))
+
+(defvar my/vterm-return-buffer nil
+  "Buffer to return to from a vterm.")
+
+(defun my/vterm-init ()
+  "Create named vterm buffers without changing the startup screen."
+  (require 'vterm)
+  (let ((original-window-config (current-window-configuration)))
+    (dolist (name my/vterm-terminals)
+      (unless (get-buffer name)
+        (save-window-excursion
+          (vterm)
+          (rename-buffer name))))
+    (set-window-configuration original-window-config)))
+
+(defun my/vterm-switch (number)
+  (interactive "nTerminal number: ")
+  (unless (<= 1 number (length my/vterm-terminals))
+    (user-error "Choose a terminal from 1 to %d"
+                (length my/vterm-terminals)))
+  (let ((name (nth (1- number) my/vterm-terminals)))
+    (unless (get-buffer name)
+      (user-error "Terminal %s does not exist" name))
+    (unless (member (buffer-name) my/vterm-terminals)
+      (setq my/vterm-return-buffer (current-buffer)))
+    (delete-other-windows)
+    (switch-to-buffer name)))
+
+(defun my/vterm-next ()
+  (interactive)
+  (let* ((count (length my/vterm-terminals))
+         (current (cl-position (buffer-name)
+                               my/vterm-terminals
+                               :test #'equal)))
+    (my/vterm-switch
+     (1+ (if current
+             (mod (1+ current) count)
+           0)))))
+
+(defun my/vterm-previous ()
+  (interactive)
+  (let* ((count (length my/vterm-terminals))
+         (current (cl-position (buffer-name)
+                               my/vterm-terminals
+                               :test #'equal)))
+    (my/vterm-switch
+     (1+ (if current
+             (mod (1- current) count)
+           (1- count))))))
+
+(defun my/vterm-return ()
+  "Return to the last non-terminal buffer."
+  (interactive)
+  (let ((target
+         (or (and (buffer-live-p my/vterm-return-buffer)
+                  (not (member (buffer-name my/vterm-return-buffer)
+                               my/vterm-terminals))
+                  my/vterm-return-buffer)
+             (seq-some
+              (lambda (buffer)
+                (unless (member (buffer-name buffer)
+                                my/vterm-terminals)
+                  buffer))
+              (buffer-list)))))
+    (if target
+        (progn
+          (delete-other-windows)
+          (switch-to-buffer target))
+      (message "No non-terminal buffer found"))))
+
+(add-hook 'emacs-startup-hook #'my/vterm-init)
+
+(map! :leader
+      :prefix ("t" . "terminals")
+      :desc "Next terminal" "n" #'my/vterm-next
+      :desc "Previous terminal" "p" #'my/vterm-previous
+      :desc "Return to code buffer" "r" #'my/vterm-return
+      :desc "Return to code buffer" "0" #'my/vterm-return)
+
+(with-eval-after-load 'which-key
+  (dotimes (i (length my/vterm-terminals))
+    (let ((number (1+ i))
+          (name (nth i my/vterm-terminals)))
+      (define-key
+       doom-leader-map
+       (kbd (format "t %d" number))
+       (let ((n number))
+         (lambda ()
+           (interactive)
+           (my/vterm-switch n))))
+      (which-key-add-key-based-replacements
+        (format "SPC t %d" number)
+        (format "Terminal %s" name)))))
+
+(use-package prettier-js)
+(use-package jtsx)
+(use-package typescript-mode)
+
+(add-hook 'js-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'jtsx-tsx-mode-hook 'prettier-js-mode)
+(add-hook 'jtsx-jsx-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-mode-hook 'prettier-js-mode)
+
+(setq prettier-js-use-modules-bin t)
+(setq prettier-js-command "prettierd")

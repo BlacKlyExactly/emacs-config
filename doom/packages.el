@@ -54,3 +54,4 @@
 (package! move-text)
 (package! tide)
 (package! jtsx)
+(package! prettier-js)
